@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: Michael Weimann <mail@michael-weimann.eu>
+--
+-- SPDX-License-Identifier: MIT
+
 local telescope = require("telescope")
 local pickers = require "telescope.pickers"
 local sorters = require('telescope.sorters')
