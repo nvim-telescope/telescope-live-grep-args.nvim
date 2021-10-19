@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 
 # Telescope live grep raw
 
+[![REUSE status](https://api.reuse.software/badge/pubcode.weimann.digital/telescope-live-grep-raw.nvim)](https://api.reuse.software/info/pubcode.weimann.digital/telescope-live-grep-raw.nvim)
+
 Live grep raw picker for [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim).
 
 ![](./img/telescope-live-grep-raw.png)
