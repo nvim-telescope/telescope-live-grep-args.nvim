@@ -10,16 +10,14 @@ local make_entry = require('telescope.make_entry')
 local finders = require "telescope.finders"
 
 local tbl_clone = function(original)
-    local copy = {}
-    for key, value in pairs(original) do
-        copy[key] = value
-    end
-    return copy
+  local copy = {}
+  for key, value in pairs(original) do
+    copy[key] = value
+  end
+  return copy
 end
 
 local grep_highlighter_only = function(opts)
-  opts = opts or {}
-
   return sorters.Sorter:new {
     scoring_function = function() return 0 end,
 
@@ -30,6 +28,8 @@ local grep_highlighter_only = function(opts)
 end
 
 local live_grep_raw = function(opts)
+  opts = opts or {}
+
   opts.vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
   opts.cwd = opts.cwd and vim.fn.expand(opts.cwd)
