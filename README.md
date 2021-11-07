@@ -12,9 +12,11 @@ Live grep raw picker for [telescope.nvim](https://github.com/nvim-telescope/tele
 
 ![](./img/telescope-live-grep-raw.png)
 
+
 ## What it does
 
 It passes the entire prompt to the grep command additionally to the vimgrep options.
+
 
 ## Installation
 
@@ -31,6 +33,7 @@ use {
 }
 ```
 
+
 ## Usage
 
 Call or map this command
@@ -38,6 +41,15 @@ Call or map this command
 ```
 :lua require("telescope").extensions.live_grep_raw.live_grep_raw()
 ```
+
+
+## Development
+
+### Running the tests
+
+- Clone [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) next to this repo
+- `make test`
+
 
 ## Acknowledgements
 

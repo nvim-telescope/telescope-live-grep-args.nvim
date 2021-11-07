@@ -2,6 +2,8 @@
 --
 -- SPDX-License-Identifier: MIT
 
+local prompt_parser = require("telescope-live-grep-raw.prompt_parser")
+
 local telescope = require("telescope")
 local pickers = require "telescope.pickers"
 local sorters = require('telescope.sorters')
@@ -40,7 +42,7 @@ local live_grep_raw = function(opts)
     end
 
     local args = tbl_clone(opts.vimgrep_arguments)
-    local prompt_parts = vim.split(prompt, " ")
+    local prompt_parts = prompt_parser.parse(prompt)
 
     local cmd = vim.tbl_flatten { args, prompt_parts }
     return cmd
