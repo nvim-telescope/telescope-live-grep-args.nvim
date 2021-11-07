@@ -6,7 +6,7 @@ SPDX-License-Identifier: CC0-1.0
 
 # Telescope live grep raw
 
-[![REUSE status](https://api.reuse.software/badge/pubcode.weimann.digital/telescope-live-grep-raw.nvim)](https://api.reuse.software/info/pubcode.weimann.digital/telescope-live-grep-raw.nvim)
+[![REUSE status](https://api.reuse.software/badge/github.com/nvim-telescope/telescope-live-grep-raw.nvim)](https://api.reuse.software/info/github.com/nvim-telescope/telescope-live-grep-raw.nvim)
 
 Live grep raw picker for [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim).
 
