@@ -19,16 +19,6 @@ local tbl_clone = function(original)
   return copy
 end
 
-local grep_highlighter_only = function(opts)
-  return sorters.Sorter:new {
-    scoring_function = function() return 0 end,
-
-    highlighter = function(_, prompt, display)
-      return {}
-    end,
-  }
-end
-
 local live_grep_raw = function(opts)
   opts = opts or {}
 
@@ -52,7 +42,7 @@ local live_grep_raw = function(opts)
     prompt_title = 'Live Grep Raw',
     finder = finders.new_job(cmd_generator, opts.entry_maker, opts.max_results, opts.cwd),
     previewer = conf.grep_previewer(opts),
-    sorter = grep_highlighter_only(opts),
+    sorter = sorters.highlighter_only(opts),
   }):find()
 end
 
