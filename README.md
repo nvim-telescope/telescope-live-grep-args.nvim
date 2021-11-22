@@ -36,7 +36,13 @@ use {
 
 ## Usage
 
-Call or map this command
+Load the extension
+
+```lua
+require('telescope').load_extension('live_grep_raw')
+```
+
+Then call or map this command
 
 ```
 :lua require("telescope").extensions.live_grep_raw.live_grep_raw()
