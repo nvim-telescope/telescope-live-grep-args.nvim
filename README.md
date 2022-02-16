@@ -39,7 +39,64 @@ use {
 Call or map this command
 
 ```
-:lua require("telescope").extensions.live_grep_raw.live_grep_raw()
+:lua require('telescope').extensions.live_grep_raw.live_grep_raw()
+```
+
+You can also call it passing arguments similar to `builtin.live_grep`
+
+```
+:lua require('telescope').extensions.live_grep_raw.live_grep_raw({vimgrep_arguments={ ... }})
+```
+
+Note that for `vimgrep_arguments` some `rg` options are required for the output to be in the right format to parse. Below are the minimal recommended and default options. Check `:help vimgrep_arguments` for details
+
+```lua
+vimgrep_arguments = {
+  'rg',
+  '--color=never',
+  '--no-heading',
+  '--with-filename',
+  '--line-number',
+  '--column',
+  '--smart-case'
+},
+```
+
+Also accepts other options. For example
+
+```
+:lua require('telescope').extensions.live_grep_raw.live_grep_raw({theme='dropdown'})
+```
+
+## Configuration
+ 
+The `live_grep_raw` extension configuration is similar to `builtin.live_grep` picker. You can configure it by adding this to your telescope extensions setup
+
+```lua
+local telescope = require 'telescope'
+telescope.setup{
+  extensions = {
+    live_grep_raw = {
+      vimgrep_arguments = {
+        'rg',
+        '--color=never',
+        '--no-heading',
+        '--with-filename',
+        '--line-number',
+        '--column',
+        '--smart-case'
+      },
+      -- ... also other pickers settings, for example:
+      -- theme = 'dropdown', -- use dropdown theme
+      -- path_display = ..., -- set how file path are displayed
+      -- mappings = {i={...}, ...}, -- add mappings specific to this picker
+      -- previewer = false, -- this show picker without preview pane
+      -- layout_config = { mirror=true }, -- mirror preview pane
+    }
+  }
+}
+
+telescope.load_extension('live_grep_raw')
 ```
 
 
