@@ -15,7 +15,10 @@ Live grep raw picker for [telescope.nvim](https://github.com/nvim-telescope/tele
 
 ## What it does
 
-It passes the entire prompt to the grep command additionally to the vimgrep options.
+It enables passing arguments to the grep command, `rg` examples:
+
+- `--no-ignore foo`
+- `"foo bar" bazdir`
 
 
 ## Installation
@@ -26,9 +29,9 @@ Add `telescope-live-grep-raw.nvim` as `telescope.nvim` dependency, e.g.:
 
 ```lua
 use {
-    'nvim-telescope/telescope.nvim',
+    "nvim-telescope/telescope.nvim",
     requires = {
-        { 'nvim-telescope/telescope-live-grep-raw.nvim' }
+        { "nvim-telescope/telescope-live-grep-raw.nvim" }
     }
 }
 ```
@@ -39,7 +42,7 @@ use {
 Load the extension
 
 ```lua
-require('telescope').load_extension('live_grep_raw')
+require("telescope").load_extension("live_grep_raw")
 ```
 
 Then call or map this command
@@ -48,6 +51,31 @@ Then call or map this command
 :lua require("telescope").extensions.live_grep_raw.live_grep_raw()
 ```
 
+
+### Grep argument examples:
+
+| prompt | args |
+| --- | --- |
+| `foo bar` | `foo bar` |
+| `"foo bar" baz` | `foo bar`, `baz` |
+| `--no-ignore "foo bar` | `--no-ignore`, `foo bar` |
+
+If the prompt value does not begin with `'`, `"` or `-` the entire prompt is treatet as a single argument.
+This behaviour can be turned off by setting the `auto_quoting` option to `false`.
+
+
+## Configuration
+
+```lua
+local telescope = require("telescope")
+telescope.setup {
+  extensions = {
+    live_grep_raw = {
+      auto_quoting = true, -- enable/disable auto-quoting
+    }
+  }
+}
+```
 
 ## Development
 
