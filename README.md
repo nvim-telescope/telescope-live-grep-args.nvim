@@ -4,13 +4,13 @@ SPDX-FileCopyrightText: 2021 Michael Weimann <mail@michael-weimann.eu>
 SPDX-License-Identifier: CC0-1.0
 -->
 
-# Telescope live grep raw
+# Telescope live grep args
 
-[![REUSE status](https://api.reuse.software/badge/github.com/nvim-telescope/telescope-live-grep-raw.nvim)](https://api.reuse.software/info/github.com/nvim-telescope/telescope-live-grep-raw.nvim)
+[![REUSE status](https://api.reuse.software/badge/github.com/nvim-telescope/telescope-live-grep-args.nvim)](https://api.reuse.software/info/github.com/nvim-telescope/telescope-live-grep-args.nvim)
 
-Live grep raw picker for [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim).
+Live grep args picker for [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim).
 
-![](./img/telescope-live-grep-raw.png)
+![](./img/telescope-live-grep-args.png)
 
 
 ## What it does
@@ -25,13 +25,13 @@ It enables passing arguments to the grep command, `rg` examples:
 
 ### Packer
 
-Add `telescope-live-grep-raw.nvim` as `telescope.nvim` dependency, e.g.:
+Add `telescope-live-grep-args.nvim` as `telescope.nvim` dependency, e.g.:
 
 ```lua
 use {
     "nvim-telescope/telescope.nvim",
     requires = {
-        { "nvim-telescope/telescope-live-grep-raw.nvim" }
+        { "nvim-telescope/telescope-live-grep-args.nvim" }
     }
 }
 ```
@@ -42,13 +42,13 @@ use {
 Load the extension
 
 ```lua
-require("telescope").load_extension("live_grep_raw")
+require("telescope").load_extension("live_grep_args")
 ```
 
 Then call or map this command
 
 ```
-:lua require("telescope").extensions.live_grep_raw.live_grep_raw()
+:lua require("telescope").extensions.live_grep_args.live_grep_args()
 ```
 
 
@@ -70,7 +70,7 @@ This behaviour can be turned off by setting the `auto_quoting` option to `false`
 local telescope = require("telescope")
 telescope.setup {
   extensions = {
-    live_grep_raw = {
+    live_grep_args = {
       auto_quoting = true, -- enable/disable auto-quoting
     }
   }
