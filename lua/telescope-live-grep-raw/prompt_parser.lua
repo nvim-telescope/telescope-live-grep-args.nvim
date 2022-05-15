@@ -76,9 +76,21 @@ local function shift_any(str)
   return result
 end
 
+local non_autoquote_chars = {
+  ["'"] = true,
+  ["\""] = true,
+  ["-"] = true,
+}
 
 --- Parses prompt shell like and returns a table containing the arguments
-M.parse = function(prompt)
+--- If autoquote is true (default) and promt does not start with ', " or - then { prompt } will be returned.
+M.parse = function(prompt, autoquote)
+  if string.len(prompt) == 0 then return {} end
+
+  autoquote = autoquote or autoquote == nil
+  local first_char = string.sub(prompt, 1, 1)
+  if autoquote and non_autoquote_chars[first_char] == nil then return { prompt } end
+
   local str = {
     chars = prompt,
     pos = 1,

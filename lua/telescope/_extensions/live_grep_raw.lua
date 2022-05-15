@@ -19,8 +19,10 @@ local tbl_clone = function(original)
   return copy
 end
 
+local setup_opts = {}
+
 local live_grep_raw = function(opts)
-  opts = opts or {}
+  opts = vim.tbl_extend('force', setup_opts, opts or {})
 
   opts.vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
@@ -32,14 +34,14 @@ local live_grep_raw = function(opts)
     end
 
     local args = tbl_clone(opts.vimgrep_arguments)
-    local prompt_parts = prompt_parser.parse(prompt)
+    local prompt_parts = prompt_parser.parse(prompt, opts.auto_quoting)
 
     local cmd = vim.tbl_flatten { args, prompt_parts }
     return cmd
   end
 
   pickers.new(opts, {
-    prompt_title = 'Live Grep Raw',
+    prompt_title = 'live grep',
     finder = finders.new_job(cmd_generator, opts.entry_maker, opts.max_results, opts.cwd),
     previewer = conf.grep_previewer(opts),
     sorter = sorters.highlighter_only(opts),
@@ -47,5 +49,10 @@ local live_grep_raw = function(opts)
 end
 
 return telescope.register_extension {
+  setup = function(ext_config)
+    for k, v in pairs(ext_config) do
+      setup_opts[k] = v
+    end
+  end,
   exports = { live_grep_raw = live_grep_raw },
 }
