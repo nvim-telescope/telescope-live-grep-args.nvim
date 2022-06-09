@@ -84,12 +84,16 @@ local non_autoquote_chars = {
 
 --- Parses prompt shell like and returns a table containing the arguments
 --- If autoquote is true (default) and promt does not start with ', " or - then { prompt } will be returned.
+--- If autoquote is "smart", only the part before "--" will be autoquoted.
 M.parse = function(prompt, autoquote)
   if string.len(prompt) == 0 then return {} end
 
-  autoquote = autoquote or autoquote == nil
+  autoquote = autoquote or true
   local first_char = string.sub(prompt, 1, 1)
-  if autoquote and non_autoquote_chars[first_char] == nil then return { prompt } end
+  if non_autoquote_chars[first_char] ~= nil then
+    autoquote = false;
+  end
+  if autoquote == true then return { prompt } end
 
   local str = {
     chars = prompt,
@@ -99,6 +103,27 @@ M.parse = function(prompt, autoquote)
 
   local parts = {}
   local current_arg = nil
+
+  if autoquote == "smart" then
+    local sep_begin, sep_end = string.find(prompt, "%-%-");
+
+    -- potentially ignore one space before seperator
+    if sep_begin and sep_begin > 1 and string.sub(prompt, sep_begin - 1, sep_begin - 1) == " " then
+      sep_begin = sep_begin - 1
+    end
+
+    sep_begin = sep_begin or string.len(prompt) + 1
+    sep_end = sep_end or string.len(prompt) + 1
+
+    local before = string.sub(prompt, 1, sep_begin - 1)
+    local after = string.sub(prompt, sep_end + 1)
+    parts = { before }
+    str = {
+      chars = after,
+      pos = 1,
+      len = string.len(after)
+    }
+  end
 
   while str["pos"] <= str["len"] do
     local safeguard = str["pos"]
