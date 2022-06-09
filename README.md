@@ -63,6 +63,16 @@ Then call or map this command
 If the prompt value does not begin with `'`, `"` or `-` the entire prompt is treatet as a single argument.
 This behaviour can be turned off by setting the `auto_quoting` option to `false`.
 
+Setting the `auto_quoting` option to `smart` allows using `--` as a seperator before flags.
+The part before the seperator is taken as a single argument, and the part after is split.
+Again, if the prompt begins with `'`, `"` or `-`, this is disabled and control is manual.
+
+| prompt | args (smart mode) |
+| --- | --- |
+| `foo bar` | `foo bar` |
+| `foo bar -- --flag` | `foo bar`, `--flag` |
+| `"foo bar" baz --flag` | `foo bar`, `baz`, `--flag` |
+
 
 ## Configuration
 
