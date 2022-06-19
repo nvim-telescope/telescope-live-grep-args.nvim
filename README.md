@@ -10,7 +10,7 @@ SPDX-License-Identifier: CC0-1.0
 
 Live grep args picker for [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim).
 
-![](./img/telescope-live-grep-args.nvim.gif)
+![](./img/telescope-live-grep-args.nvim.png)
 
 
 ## What it does
