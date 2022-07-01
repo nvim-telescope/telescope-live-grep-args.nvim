@@ -10,6 +10,7 @@ local sorters = require('telescope.sorters')
 local conf = require('telescope.config').values
 local make_entry = require('telescope.make_entry')
 local finders = require "telescope.finders"
+local actions = require("telescope-live-grep-args.actions")
 
 local tbl_clone = function(original)
   local copy = {}
@@ -19,10 +20,21 @@ local tbl_clone = function(original)
   return copy
 end
 
-local setup_opts = {}
+local setup_opts = {
+  auto_quoting = true,
+}
+
+local default_mappings = {
+  i = {
+    ["<C-k>"] = actions.quote_prompt(), -- k for kwote :D - q is already taken
+    ["<C-l>g"] = actions.quote_prompt({ postfix = ' --iglob ' }), -- l for live grep args; g for glob
+    ["<C-l>t"] = actions.quote_prompt({ postfix = ' -t' }), -- l for live grep args; t for type
+  },
+}
 
 local live_grep_args = function(opts)
-  opts = vim.tbl_extend('force', setup_opts, opts or {})
+  opts = vim.tbl_extend("force", setup_opts, opts or {})
+  opts.mappings = vim.tbl_deep_extend("force", default_mappings, opts.mappings or {})
 
   opts.vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
@@ -45,6 +57,14 @@ local live_grep_args = function(opts)
     finder = finders.new_job(cmd_generator, opts.entry_maker, opts.max_results, opts.cwd),
     previewer = conf.grep_previewer(opts),
     sorter = sorters.highlighter_only(opts),
+    attach_mappings = function(_, map)
+      for mode, mappings in pairs(opts.mappings) do
+        for key, action in pairs(mappings) do
+          map(mode, key, action)
+        end
+      end
+      return true
+    end
   }):find()
 end
 
