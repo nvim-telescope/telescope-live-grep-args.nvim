@@ -134,6 +134,24 @@ This table provides some mapping ideas:
 | `actions.quote_prompt({ postfix = ' -t' })` | Quote prompt and add `-t` | `foo` → `"foo" -t` |
 
 
+### Shortcut functions
+
+Live grep args ships some additional shortcuts you can map.
+
+This is an example to live grep for the word under the cursor:
+
+```
+local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
+keymap.set("n", "<leader>gc", live_grep_args_shortcuts.grep_word_under_cursor)
+```
+
+Available shortcuts:
+
+| Name | Action |
+| --- | --- |
+| `grep_word_under_cursor` | Start live grep with word under cursor |
+
+
 ## Development
 
 ### Running the tests
