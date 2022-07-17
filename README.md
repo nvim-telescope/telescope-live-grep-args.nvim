@@ -78,6 +78,21 @@ Call live grep args:
 | `<C-l>g` | Quote prompt and add `--iglob`, e.g. `foo` → `"foo" --iglob ` |
 | `<C-l>t` | Quote prompt and add `-t`, e.g. `foo` → `"foo" -t` |
 
+Live grep args ships some additional shortcuts you can map.
+
+This is an example to live grep for the word under the cursor:
+
+```
+local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
+keymap.set("n", "<leader>gc", live_grep_args_shortcuts.grep_word_under_cursor)
+```
+
+Available shortcuts:
+
+| Name | Action |
+| --- | --- |
+| `grep_word_under_cursor` | Start live grep with word under cursor |
+
 
 ### Grep argument examples
 
