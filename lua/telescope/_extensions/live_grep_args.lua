@@ -24,17 +24,9 @@ local setup_opts = {
   auto_quoting = true,
 }
 
-local default_mappings = {
-  i = {
-    ["<C-k>"] = actions.quote_prompt(), -- k for kwote :D - q is already taken
-    ["<C-l>g"] = actions.quote_prompt({ postfix = ' --iglob ' }), -- l for live grep args; g for glob
-    ["<C-l>t"] = actions.quote_prompt({ postfix = ' -t' }), -- l for live grep args; t for type
-  },
-}
-
 local live_grep_args = function(opts)
   opts = vim.tbl_extend("force", setup_opts, opts or {})
-  opts.mappings = vim.tbl_deep_extend("force", default_mappings, opts.mappings or {})
+  opts.mappings = opts.mappings or {}
 
   opts.vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
