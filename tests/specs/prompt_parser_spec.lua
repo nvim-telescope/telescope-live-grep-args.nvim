@@ -6,6 +6,16 @@ local prompt_parser = require("telescope-live-grep-args.prompt_parser")
 
 local tests = {
   {
+    "\"",
+    {},
+    {}
+  },
+  {
+    "\"\"",
+    {""},
+    {""}
+  },
+  {
     "test1",     -- input value
     { "test1" }, -- expected with auto-quoting
     { "test1" }  -- expected without auto-quoting

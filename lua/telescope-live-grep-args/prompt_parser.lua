@@ -122,8 +122,11 @@ M.parse = function(prompt, autoquote)
 
       if delim then
         frag = shift_until_delim(str, delim)
-        frag = string.gsub(frag, "\\\"", "\"")
-        frag = string.gsub(frag, "\\'", "'")
+        if frag then
+          frag = frag
+            :gsub( "\\\"", "\"")
+            :gsub("\\'", "'")
+        end
       else
         frag = shift_any(str)
       end
