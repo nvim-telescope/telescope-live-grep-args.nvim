@@ -75,8 +75,6 @@ Call live grep args:
 | Mappings | Action |
 | --- | --- |
 | `<C-k>` | Quote prompt, e.g. `foo` → `"foo" ` |
-| `<C-l>g` | Quote prompt and add `--iglob`, e.g. `foo` → `"foo" --iglob ` |
-| `<C-l>t` | Quote prompt and add `-t`, e.g. `foo` → `"foo" -t` |
 
 
 ### Grep argument examples
@@ -104,17 +102,29 @@ telescope.setup {
   extensions = {
     live_grep_args = {
       auto_quoting = true, -- enable/disable auto-quoting
-      mappings = {
+      -- override default mappings
+      -- default_mappings = {},
+      mappings = { -- extend mappings
         i = {
           ["<C-k>"] = lga_actions.quote_prompt(),
-          ["<C-l>g"] = lga_actions.quote_prompt({ postfix = ' --iglob ' }),
-          ["<C-l>t"] = lga_actions.quote_prompt({ postfix = ' -t' }),
         }
       }
     }
   }
 }
 ```
+
+
+### Mapping recipes:
+
+This table provides some mapping ideas:
+
+| Mapped function | Description | Example |
+| --- | --- | --- |
+| `actions.quote_prompt()` | Quote prompt | `foo` → `"foo"` |
+| `actions.quote_prompt({ postfix = ' --iglob ' })` | Quote prompt and add `--iglob` | `foo` → `"foo" --iglob ` |
+| `actions.quote_prompt({ postfix = ' -t' })` | Quote prompt and add `-t` | `foo` → `"foo" -t` |
+
 
 ## Development
 
