@@ -109,10 +109,15 @@ telescope.setup {
           ["<C-k>"] = lga_actions.quote_prompt(),
         }
       }
+      -- ... also accepts theme settings, for example:
+      -- theme = 'dropdown', -- use dropdown theme
+      -- layout_config = { mirror=true }, -- mirror preview pane
     }
   }
 }
 ```
+
+This extension accepts the same options as `builtin.live_grep`, check out `:help live_grep` and `:help vimgrep_arguments` for more information. Additionally it also accepts `theme` and `layout_config`.
 
 
 ### Mapping recipes:
