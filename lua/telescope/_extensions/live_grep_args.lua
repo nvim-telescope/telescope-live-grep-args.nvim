@@ -51,6 +51,11 @@ local live_grep_args = function(opts)
     return cmd
   end
 
+  -- apply theme
+  if opts.theme then
+    opts = require('telescope.themes')['get_' .. opts.theme](opts)
+  end
+
   pickers.new(opts, {
     prompt_title = "Live Grep (Args)",
     finder = finders.new_job(cmd_generator, opts.entry_maker, opts.max_results, opts.cwd),
