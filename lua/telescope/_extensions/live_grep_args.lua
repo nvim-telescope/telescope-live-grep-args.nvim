@@ -7,6 +7,7 @@ local prompt_parser = require("telescope-live-grep-args.prompt_parser")
 local telescope = require("telescope")
 local pickers = require "telescope.pickers"
 local sorters = require('telescope.sorters')
+local themes = require("telescope.themes")
 local conf = require('telescope.config').values
 local make_entry = require('telescope.make_entry')
 local finders = require "telescope.finders"
@@ -52,8 +53,14 @@ local live_grep_args = function(opts)
   end
 
   -- apply theme
-  if opts.theme then
-    opts = require('telescope.themes')['get_' .. opts.theme](opts)
+  if type(opts.theme) == "table" then
+    opts = vim.tbl_extend("force", opts, opts.theme)
+  elseif type(opts.theme) == "string" then
+    if themes['get_' .. opts.theme] == nil then
+      vim.notify_once("live grep args config theme »" .. opts.theme .. "« not found", vim.log.levels.WARN)
+    else
+      opts = themes['get_' .. opts.theme](opts)
+    end
   end
 
   pickers.new(opts, {
