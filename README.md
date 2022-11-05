@@ -18,8 +18,10 @@ Live grep args picker for [telescope.nvim](https://github.com/nvim-telescope/tel
 It enables passing arguments to the grep command, `rg` examples:
 
 - `foo` → press `<C-k>` → `"foo" ` → `"foo" -tmd`
+  - Only works if you set up the `<C-k>` mapping
 - `--no-ignore foo`
 - `"foo bar" bazdir`
+- `"foo" --iglob **/bar/**`
 
 Find the full [ripgrep guide](https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md) here to find out what is possible.
 
@@ -70,13 +72,6 @@ Call live grep args:
 
 ## Usage
 
-### Mappings
-
-| Mappings | Action |
-| --- | --- |
-| `<C-k>` | Quote prompt, e.g. `foo` → `"foo" ` |
-
-
 ### Grep argument examples
 
 (Some examples are ripgrep specific)
@@ -86,6 +81,7 @@ Call live grep args:
 | `foo bar` | `foo bar` | search for „foo bar“ |
 | `"foo bar" baz` | `foo bar`, `baz` | search for „foo bar“ in dir „baz“ |
 | `--no-ignore "foo bar` | `--no-ignore`, `foo bar` | search for „foo bar“ ignoring ignores |
+| `"foo" --iglob **/test/**` | search for „foo“ in any „test“ path |
 | `"foo" ../other-project` | `foo`, `../other-project` | search for „foo“ in `../other-project` |
 
 If the prompt value does not begin with `'`, `"` or `-` the entire prompt is treated as a single argument.
@@ -102,13 +98,13 @@ telescope.setup {
   extensions = {
     live_grep_args = {
       auto_quoting = true, -- enable/disable auto-quoting
-      -- override default mappings
-      -- default_mappings = {},
+      -- define mappings, e.g.
       mappings = { -- extend mappings
         i = {
           ["<C-k>"] = lga_actions.quote_prompt(),
-        }
-      }
+          ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+        },
+      },
       -- ... also accepts theme settings, for example:
       -- theme = "dropdown", -- use dropdown theme
       -- theme = { }, -- use own theme spec
