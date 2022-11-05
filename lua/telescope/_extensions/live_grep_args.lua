@@ -23,18 +23,11 @@ end
 
 local setup_opts = {
   auto_quoting = true,
-}
-
-local default_mappings = {
-  i = {
-    ["<C-k>"] = actions.quote_prompt(), -- k for kwote :D - q is already taken
-  },
+  mappings = {},
 }
 
 local live_grep_args = function(opts)
   opts = vim.tbl_extend("force", setup_opts, opts or {})
-  local mappings = opts.default_mappings or default_mappings
-  opts.mappings = vim.tbl_deep_extend("force", mappings, opts.mappings or {})
 
   opts.vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
