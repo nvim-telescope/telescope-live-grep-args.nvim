@@ -72,6 +72,12 @@ Call live grep args:
 
 ## Usage
 
+### Options
+
+| Name | Description |
+| --- | --- |
+| `search_dirs` | Directory/directories/files to search. Paths are expanded and appended to the grep command. |
+
 ### Grep argument examples
 
 (Some examples are ripgrep specific)
