@@ -109,6 +109,9 @@ telescope.setup {
       -- theme = "dropdown", -- use dropdown theme
       -- theme = { }, -- use own theme spec
       -- layout_config = { mirror=true }, -- mirror preview pane
+      
+      -- custom prompt parse function
+      -- prompt_parse_fun = function(prompt, autoquote) … end,
     }
   }
 }
