@@ -32,6 +32,7 @@ local live_grep_args = function(opts)
   opts.vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
   opts.cwd = opts.cwd and vim.fn.expand(opts.cwd)
+  opts.prompt_parse_fun = opts.prompt_parse_fun or prompt_parser.parse
 
   local cmd_generator = function(prompt)
     if not prompt or prompt == "" then
@@ -39,8 +40,7 @@ local live_grep_args = function(opts)
     end
 
     local args = tbl_clone(opts.vimgrep_arguments)
-    local prompt_parts = prompt_parser.parse(prompt, opts.auto_quoting)
-
+    local prompt_parts = opts.prompt_parse_fun(prompt, opts.auto_quoting)
     local cmd = vim.tbl_flatten { args, prompt_parts }
     return cmd
   end
