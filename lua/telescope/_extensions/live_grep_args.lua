@@ -33,6 +33,12 @@ local live_grep_args = function(opts)
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
   opts.cwd = opts.cwd and vim.fn.expand(opts.cwd)
 
+  if opts.search_dirs then
+    for i, path in ipairs(opts.search_dirs) do
+      opts.search_dirs[i] = vim.fn.expand(path)
+    end
+  end
+
   local cmd_generator = function(prompt)
     if not prompt or prompt == "" then
       return nil
@@ -41,7 +47,7 @@ local live_grep_args = function(opts)
     local args = tbl_clone(opts.vimgrep_arguments)
     local prompt_parts = prompt_parser.parse(prompt, opts.auto_quoting)
 
-    local cmd = vim.tbl_flatten { args, prompt_parts }
+    local cmd = vim.tbl_flatten { args, prompt_parts, opts.search_dirs }
     return cmd
   end
 
