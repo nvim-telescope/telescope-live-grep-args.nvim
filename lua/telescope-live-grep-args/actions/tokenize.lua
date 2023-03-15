@@ -6,34 +6,46 @@ local default_opts = {
 	trim = true,
 }
 
-
 return function(opts)
 	opts = opts or {}
 	opts = vim.tbl_extend("force", default_opts, opts)
 
 	return function(prompt_bufnr)
-
 		local wrap, yield = coroutine.wrap, coroutine.yield
 
 		local function permgen(a, n)
-				n = n or #a
-				if n <= 1 then
-						yield(a)
-				else
-						for i = 1, n do
-								-- put i-th element as the last one
-								a[n], a[i] = a[i], a[n]
-								-- generate all permutations of the other elements
-								permgen(a, n - 1)
-								-- restore i-th element
-								a[n], a[i] = a[i], a[n]
-						end
+			n = n or #a
+			if n <= 1 then
+				yield(a)
+			else
+				for i = 1, n do
+					-- put i-th element as the last one
+					a[n], a[i] = a[i], a[n]
+					-- generate all permutations of the other elements
+					permgen(a, n - 1)
+					-- restore i-th element
+					a[n], a[i] = a[i], a[n]
 				end
+			end
 		end
 
 		function permutations(a)
-				-- call with coroutine.wrap()
-				return wrap(function() permgen(a) end)
+			-- call with coroutine.wrap()
+			return wrap(function()
+				permgen(a)
+			end)
+		end
+
+		function removeDuplicates(tbl)
+			local newTbl = {}
+			local seen = {}
+			for _, value in ipairs(tbl) do
+				if not seen[value] then
+					table.insert(newTbl, value)
+					seen[value] = true
+				end
+			end
+			return newTbl
 		end
 
 		local picker = action_state.get_current_picker(prompt_bufnr)
@@ -48,11 +60,8 @@ return function(opts)
 		end
 
 		prompt = ""
-		-- TODO Remove duplicate permutations
-		-- a a b → a.*b.*a|b.*a.*a|b.*a.*a|a.*b.*a|a.*a.*b|a.*b.*a it should be:
-		-- a a b → a.*b.*a|b.*a.*a|a.*a.*b
-		for combo in permutations(tokens) do
-			prompt = prompt .. "|" .. table.concat(combo, '.*')
+		for combo in permutations(removeDuplicates(tokens)) do
+			prompt = prompt .. "|" .. table.concat(combo, ".*")
 		end
 		prompt = prompt:sub(2)
 
