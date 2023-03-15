@@ -53,10 +53,14 @@ return function(opts)
 		if opts.trim then
 			prompt = vim.trim(prompt)
 		end
+
 		local tokens = {}
-		-- TODO interpret two spaces or more as a literal space
-		for token in prompt:gmatch("%S+") do
-			table.insert(tokens, token)
+		for chunks in prompt:gmatch("%S%S+") do
+			for chunk in chunks do
+				for token in chunk:gmatch("%S") do
+					table.insert(tokens, token)
+				end
+			end
 		end
 
 		prompt = ""
