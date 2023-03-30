@@ -150,7 +150,7 @@ M.parse = function(prompt, autoquote)
 
   ::afterloop::
 
-  return parts
+  return {}, parts
 end
 
 return M
