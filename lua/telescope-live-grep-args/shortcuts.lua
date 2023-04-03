@@ -17,7 +17,7 @@ local grep_under_default_opts = {
   trim = true,
 }
 
-local function proces_grep_under_text(value, opts)
+local function process_grep_under_text(value, opts)
   opts = opts or {}
   opts = vim.tbl_extend("force", grep_under_default_opts, opts)
 
@@ -41,14 +41,14 @@ local M = {}
 
 M.grep_word_under_cursor = function(opts)
   local word_under_cursor = vim.fn.expand("<cword>")
-  word_under_cursor = proces_grep_under_text(word_under_cursor, opts)
+  word_under_cursor = process_grep_under_text(word_under_cursor, opts)
   live_grep_args.live_grep_args({ default_text = word_under_cursor })
 end
 
 M.grep_visual_selection = function(opts)
   local visual = get_visual()
   local text = visual[1] or ""
-  text = proces_grep_under_text(text, opts)
+  text = process_grep_under_text(text, opts)
   live_grep_args.live_grep_args({ default_text = text })
 end
 
