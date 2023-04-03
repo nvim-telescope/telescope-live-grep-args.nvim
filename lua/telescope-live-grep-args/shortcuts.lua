@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2023 Michael Weimann <mail@michael-weimann.eu>
+--
+-- SPDX-License-Identifier: MIT
+
 local live_grep_args = require("telescope").extensions.live_grep_args
 local helpers = require("telescope-live-grep-args.helpers")
 
