@@ -3,6 +3,7 @@
 -- SPDX-License-Identifier: MIT
 
 local action_state = require "telescope.actions.state"
+local helpers = require "telescope-live-grep-args.helpers"
 
 local default_opts = {
   quote_char = '"',
@@ -20,8 +21,7 @@ return function (opts)
     if opts.trim then
       prompt = vim.trim(prompt)
     end
-    prompt = prompt:gsub(opts.quote_char, "\\" .. opts.quote_char)
-    prompt = opts.quote_char .. prompt .. opts.quote_char .. opts.postfix
+    prompt = helpers.quote(prompt, { quote_char =  opts.quote_char }) .. opts.postfix
     picker:set_prompt(prompt)
   end
 end
