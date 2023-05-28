@@ -21,7 +21,11 @@ return function (opts)
     if opts.trim then
       prompt = vim.trim(prompt)
     end
-    prompt = helpers.quote(prompt, { quote_char =  opts.quote_char }) .. opts.postfix
+    if opts.quote_char == "" then
+      prompt = prompt .. opts.postfix
+    else
+      prompt = helpers.quote(prompt, { quote_char =  opts.quote_char }) .. opts.postfix
+    end
     picker:set_prompt(prompt)
   end
 end
