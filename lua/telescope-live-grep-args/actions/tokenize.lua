@@ -29,14 +29,14 @@ return function(opts)
 			end
 		end
 
-		function permutations(a)
+		local function permutations(a)
 			-- call with coroutine.wrap()
 			return wrap(function()
 				permgen(a)
 			end)
 		end
 
-		function removeDuplicates(tbl)
+		local function removeDuplicates(tbl)
 			local newTbl = {}
 			local seen = {}
 			for _, value in ipairs(tbl) do
@@ -54,8 +54,12 @@ return function(opts)
 			prompt = vim.trim(prompt)
 		end
 		local tokens = {}
-		-- TODO interpret two spaces or more as a literal space
+
+		-- Pretty sure nobody will use this as part of the prompt!
+		local unique_string = "<!token_separator!>"
+		prompt = prompt:gsub("%s%s+", unique_string)
 		for token in prompt:gmatch("%S+") do
+			token = token:gsub(unique_string, " ")
 			table.insert(tokens, token)
 		end
 
