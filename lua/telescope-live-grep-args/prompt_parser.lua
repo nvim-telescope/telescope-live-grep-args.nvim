@@ -145,6 +145,9 @@ M.parse = function(prompt, autoquote)
   end
 
   if current_arg ~= nil then
+    if string.find(current_arg, "~/") then
+      current_arg = string.gsub(current_arg, "~/", vim.fn.expand("~/"))
+    end
     table.insert(parts, current_arg)
   end
 
