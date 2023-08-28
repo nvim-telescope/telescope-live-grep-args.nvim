@@ -28,6 +28,30 @@ Find the full [ripgrep guide](https://github.com/BurntSushi/ripgrep/blob/master/
 
 ## Installation
 
+[Changelog](./CHANGELOG.md)
+
+<details>
+    <summary>Lazy</summary>
+Add `telescope-live-grep-args.nvim` as `telescope.nvim` dependency, e.g.:
+
+```lua
+use {
+  "nvim-telescope/telescope.nvim",
+  dependencies = {
+    { 
+        "nvim-telescope/telescope-live-grep-args.nvim" ,
+        -- This will not install any breaking changes.
+        -- For major updates, this must be adjusted manually.
+        version = "^1.0.0",
+    },
+  },
+  config = function()
+    require("telescope").load_extension("live_grep_args")
+  end
+}
+```
+</details>
+
 <details>
     <summary>Packer</summary>
 Add `telescope-live-grep-args.nvim` as `telescope.nvim` dependency, e.g.:
