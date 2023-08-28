@@ -8,7 +8,7 @@ local quote_default_opts = {
   quote_char = '"',
 }
 
-M.quote = function (value, opts)
+M.quote = function(value, opts)
   opts = opts or {}
   opts = vim.tbl_extend("force", quote_default_opts, opts)
 
