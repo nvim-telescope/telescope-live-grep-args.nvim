@@ -5,7 +5,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before reporting: search [existing issues](https://github.com/nvim-telescope/telescope.nvim/issues) and make sure that both Telescope and its dependencies are updated to the latest version.
+        Before reporting: search [existing issues](https://github.com/nvim-telescope/telescope-live-grep-args.nvim/issues) and
+        make sure that both Telescope and its dependencies are updated to the latest version.
   - type: textarea
     attributes:
       label: "Description"
@@ -26,13 +27,19 @@ body:
   - type: input
     attributes:
       label: "Operating system and version"
-      placeholder: "macOS 11.5"
+      placeholder: "Ubuntu 22.04.3 LTS"
     validations:
       required: true
   - type: input
     attributes:
       label: "Telescope version / branch / rev"
-      placeholder: "telescope 0.1.0"
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: "Telescope live grep args version / branch / rev"
+      placeholder: "1.0.0"
     validations:
       required: true
   - type: textarea
@@ -91,7 +98,8 @@ body:
                  'nvim-telescope/telescope.nvim',
                  requires = {
                    'nvim-lua/plenary.nvim',
-                   { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+                   { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', },
+                   { 'nvim-telescope/telescope-live-grep-args.nvim', },
                  },
                },
                -- ADD PLUGINS THAT ARE _NECESSARY_ FOR REPRODUCING THE ISSUE
@@ -106,6 +114,7 @@ body:
          _G.load_config = function()
            require('telescope').setup()
            require('telescope').load_extension('fzf')
+           require('telescope').load_extension('live_grep_args')
            -- ADD INIT.LUA SETTINGS THAT ARE _NECESSARY_ FOR REPRODUCING THE ISSUE
          end
          if vim.fn.isdirectory(install_path) == 0 then
