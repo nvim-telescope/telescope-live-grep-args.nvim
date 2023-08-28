@@ -4,3 +4,11 @@
 
 test:
 	nvim --headless --noplugin -u scripts/minimal_init.vim -c "PlenaryBustedDirectory tests/specs/ { minimal_init = './scripts/minimal_init.vim' }"
+
+lint\:luacheck:
+	luacheck .
+
+lint\:stylua:
+	stylua --check .
+
+lint: lint\:luacheck lint\:stylua
