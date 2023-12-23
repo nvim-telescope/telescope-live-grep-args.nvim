@@ -3,5 +3,6 @@
 -- SPDX-License-Identifier: MIT
 
 return {
-  quote_prompt = require("telescope-live-grep-args.actions.quote_prompt"),
+	quote_prompt = require("telescope-live-grep-args.actions.quote_prompt"),
+	tokenize = require("telescope-live-grep-args.actions.tokenize"),
 }
