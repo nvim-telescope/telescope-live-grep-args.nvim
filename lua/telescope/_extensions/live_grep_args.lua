@@ -63,7 +63,7 @@ local live_grep_args = function(opts)
 
   pickers
     .new(opts, {
-      prompt_title = "Live Grep (Args)",
+      prompt_title = opts.prompt_title or "Live Grep (Args)",
       finder = finders.new_job(cmd_generator, opts.entry_maker, opts.max_results, opts.cwd),
       previewer = conf.grep_previewer(opts),
       sorter = sorters.highlighter_only(opts),
