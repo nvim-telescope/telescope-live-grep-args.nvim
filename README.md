@@ -46,7 +46,15 @@ use {
     },
   },
   config = function()
-    require("telescope").load_extension("live_grep_args")
+    local telescope = require("telescope")
+
+    -- first setup telescope
+    telescope.setup({
+        -- your config
+    })
+
+    -- then load the extension
+    telescope.load_extension("live_grep_args")
   end
 }
 ```
@@ -63,7 +71,15 @@ use {
     { "nvim-telescope/telescope-live-grep-args.nvim" },
   },
   config = function()
-    require("telescope").load_extension("live_grep_args")
+    local telescope = require("telescope")
+
+    -- first setup telescope
+    telescope.setup({
+        -- your config
+    })
+
+    -- then load the extension
+    telescope.load_extension("live_grep_args")
   end
 }
 ```
@@ -74,7 +90,15 @@ use {
 Once live grep args is available as lua module, load the extension:
 
 ```
-require("telescope").load_extension("live_grep_args")
+local telescope = require("telescope")
+
+-- first setup telescope
+telescope.setup({
+    -- your config
+})
+
+-- then load the extension
+telescope.load_extension("live_grep_args")
 ```
 </details>
 
@@ -144,6 +168,10 @@ telescope.setup {
     }
   }
 }
+
+-- don't forget to load the extension
+telescope.load_extension("live_grep_args")
+
 ```
 
 This extension accepts the same options as `builtin.live_grep`, check out `:help live_grep` and `:help vimgrep_arguments` for more information. Additionally it also accepts `theme` and `layout_config`.
