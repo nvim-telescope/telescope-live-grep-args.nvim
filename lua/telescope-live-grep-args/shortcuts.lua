@@ -38,22 +38,40 @@ local function process_grep_under_text(value, opts)
     value = value .. opts.postfix
   end
 
-  return value
+  opts["default_text"] = value
+
+  return opts
 end
 
 local M = {}
 
 M.grep_word_under_cursor = function(opts)
+  opts = opts or {}
   local word_under_cursor = vim.fn.expand("<cword>")
-  word_under_cursor = process_grep_under_text(word_under_cursor, opts)
-  live_grep_args.live_grep_args({ default_text = word_under_cursor })
+  opts = process_grep_under_text(word_under_cursor, opts)
+  live_grep_args.live_grep_args(opts)
 end
 
 M.grep_visual_selection = function(opts)
+  opts = opts or {}
   local visual = get_visual()
   local text = visual[1] or ""
-  text = process_grep_under_text(text, opts)
-  live_grep_args.live_grep_args({ default_text = text })
+  opts = process_grep_under_text(text, opts)
+  live_grep_args.live_grep_args(opts)
+end
+
+M.grep_word_visual_selection_current_buffer = function(opts)
+  opts = opts or {}
+  local curr_path = vim.fn.expand("%")
+  opts["search_dirs"] = { curr_path }
+  M.grep_visual_selection(opts)
+end
+
+M.grep_word_under_cursor_current_buffer = function(opts)
+  opts = opts or {}
+  local curr_path = vim.fn.expand("%")
+  opts["search_dirs"] = { curr_path }
+  M.grep_word_under_cursor(opts)
 end
 
 return M
