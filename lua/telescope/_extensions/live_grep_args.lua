@@ -2,6 +2,7 @@
 --
 -- SPDX-License-Identifier: MIT
 
+local helpers = require("telescope-live-grep-args.helpers")
 local prompt_parser = require("telescope-live-grep-args.prompt_parser")
 
 local pickers = require("telescope.pickers")
@@ -38,6 +39,8 @@ local live_grep_args = function(opts)
     end
   end
 
+  local picker
+
   local cmd_generator = function(prompt)
     if not prompt or prompt == "" then
       return nil
@@ -61,22 +64,32 @@ local live_grep_args = function(opts)
     end
   end
 
-  pickers
-    .new(opts, {
-      prompt_title = "Live Grep (Args)",
-      finder = finders.new_job(cmd_generator, opts.entry_maker, opts.max_results, opts.cwd),
-      previewer = conf.grep_previewer(opts),
-      sorter = sorters.highlighter_only(opts),
-      attach_mappings = function(_, map)
-        for mode, mappings in pairs(opts.mappings) do
-          for key, action in pairs(mappings) do
-            map(mode, key, action)
-          end
+  picker = pickers.new(opts, {
+    prompt_title = "Live Grep (Args)",
+    finder = finders.new_job(cmd_generator, opts.entry_maker, opts.max_results, opts.cwd),
+    previewer = conf.grep_previewer(opts),
+    sorter = (opts.custom_sorter and opts.custom_sorter or sorters.highlighter_only(opts)),
+    attach_mappings = function(_, map)
+      for mode, mappings in pairs(opts.mappings) do
+        for key, action in pairs(mappings) do
+          map(mode, key, action)
         end
-        return true
-      end,
-    })
-    :find()
+      end
+      return true
+    end,
+  })
+
+  local org_highligh_on_row = picker.highlight_one_row
+  picker.highlight_one_row = function(...)
+    local args = { ... }
+    assert(#args == 5, 'invalid argment declation')
+
+    args[3] = picker._get_prompt(picker)
+
+    org_highligh_on_row(table.unpack(args))
+  end
+
+  picker:find()
 end
 
 return telescope.register_extension({

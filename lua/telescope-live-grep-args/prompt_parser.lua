@@ -134,7 +134,7 @@ M.parse = function(prompt, autoquote)
       end
 
       frag = frag or ''
-      
+
       if current_arg == nil then
         current_arg = frag
       else
