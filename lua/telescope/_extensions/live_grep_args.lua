@@ -32,6 +32,15 @@ local live_grep_args = function(opts)
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
   opts.cwd = opts.cwd and vim.fn.expand(opts.cwd)
 
+  local additional_args = {}
+  if opts.additional_args ~= nil then
+    if type(opts.additional_args) == "function" then
+      additional_args = opts.additional_args(opts)
+    elseif type(opts.additional_args) == "table" then
+      additional_args = opts.additional_args
+    end
+  end
+
   if opts.search_dirs then
     for i, path in ipairs(opts.search_dirs) do
       opts.search_dirs[i] = vim.fn.expand(path)
@@ -43,7 +52,7 @@ local live_grep_args = function(opts)
       return nil
     end
 
-    local args = tbl_clone(opts.vimgrep_arguments)
+    local args = vim.tbl_flatten({ tbl_clone(opts.vimgrep_arguments), tbl_clone(additional_args) })
     local prompt_parts = prompt_parser.parse(prompt, opts.auto_quoting)
 
     local cmd = vim.tbl_flatten({ args, prompt_parts, opts.search_dirs })
