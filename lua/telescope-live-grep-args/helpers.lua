@@ -16,4 +16,13 @@ M.quote = function(value, opts)
   return opts.quote_char .. quoted .. opts.quote_char
 end
 
+M.extract_quotes = function(input)
+  local match = input:match('"(.-)"')
+  if match then
+    return match
+  else
+    return input
+  end
+end
+
 return M

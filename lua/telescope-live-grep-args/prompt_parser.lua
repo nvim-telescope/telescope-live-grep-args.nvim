@@ -133,6 +133,8 @@ M.parse = function(prompt, autoquote)
         frag = shift_any(str)
       end
 
+      frag = frag or ''
+
       if current_arg == nil then
         current_arg = frag
       else
