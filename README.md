@@ -28,6 +28,38 @@ Find the full [ripgrep guide](https://github.com/BurntSushi/ripgrep/blob/master/
 
 ## Installation
 
+[Changelog](./CHANGELOG.md)
+
+<details>
+    <summary>Lazy</summary>
+Add `telescope-live-grep-args.nvim` as `telescope.nvim` dependency, e.g.:
+
+```lua
+use {
+  "nvim-telescope/telescope.nvim",
+  dependencies = {
+    { 
+        "nvim-telescope/telescope-live-grep-args.nvim" ,
+        -- This will not install any breaking changes.
+        -- For major updates, this must be adjusted manually.
+        version = "^1.0.0",
+    },
+  },
+  config = function()
+    local telescope = require("telescope")
+
+    -- first setup telescope
+    telescope.setup({
+        -- your config
+    })
+
+    -- then load the extension
+    telescope.load_extension("live_grep_args")
+  end
+}
+```
+</details>
+
 <details>
     <summary>Packer</summary>
 Add `telescope-live-grep-args.nvim` as `telescope.nvim` dependency, e.g.:
@@ -39,7 +71,15 @@ use {
     { "nvim-telescope/telescope-live-grep-args.nvim" },
   },
   config = function()
-    require("telescope").load_extension("live_grep_args")
+    local telescope = require("telescope")
+
+    -- first setup telescope
+    telescope.setup({
+        -- your config
+    })
+
+    -- then load the extension
+    telescope.load_extension("live_grep_args")
   end
 }
 ```
@@ -50,7 +90,15 @@ use {
 Once live grep args is available as lua module, load the extension:
 
 ```
-require("telescope").load_extension("live_grep_args")
+local telescope = require("telescope")
+
+-- first setup telescope
+telescope.setup({
+    -- your config
+})
+
+-- then load the extension
+telescope.load_extension("live_grep_args")
 ```
 </details>
 
@@ -71,6 +119,12 @@ Call live grep args:
 
 
 ## Usage
+
+### Options
+
+| Name | Description |
+| --- | --- |
+| `search_dirs` | Directory/directories/files to search. Paths are expanded and appended to the grep command. |
 
 ### Grep argument examples
 
@@ -104,6 +158,8 @@ telescope.setup {
           ["<C-k>"] = lga_actions.quote_prompt(),
           ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
           ["<C-a>"] = lga_actions.tokenize(),
+          -- freeze the current list and start a fuzzy search in the frozen list
+          ["<C-space>"] = actions.to_fuzzy_refine,
         },
       },
       -- ... also accepts theme settings, for example:
@@ -113,9 +169,19 @@ telescope.setup {
     }
   }
 }
+
+-- don't forget to load the extension
+telescope.load_extension("live_grep_args")
+
 ```
 
 This extension accepts the same options as `builtin.live_grep`, check out `:help live_grep` and `:help vimgrep_arguments` for more information. Additionally it also accepts `theme` and `layout_config`.
+
+`live_grep_args` args
+
+| Name | Type | Description | Example |
+| --- | --- | --- | --- |
+| `additional_args` | `function|table` | additional arguments to be passed on. Can be fn(opts) -> tbl | `{ '-tmd' }` |
 
 
 ### Mapping recipes:
@@ -128,6 +194,27 @@ This table provides some mapping ideas:
 | `actions.quote_prompt({ postfix = ' --iglob ' })` | Quote prompt and add `--iglob` | `foo` → `"foo" --iglob ` |
 | `actions.quote_prompt({ postfix = ' -t' })` | Quote prompt and add `-t` | `foo` → `"foo" -t` |
 | `actions.tokenize()` | "Fuzzy" tokenized search split by single space | `two words` → `words.*two|two.*words` |
+
+
+### Shortcut functions
+
+Live grep args ships some additional shortcuts you can map.
+
+This is an example to live grep for the word under the cursor:
+
+```
+local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
+keymap.set("n", "<leader>gc", live_grep_args_shortcuts.grep_word_under_cursor)
+```
+
+Available shortcuts:
+
+| Name | Action | Options |
+| --- | --- | --- |
+| `grep_word_under_cursor` | Start live grep with word under cursor | <ul><li>`postfix`: postfix value to add; defaults to ` -F ` (Treat the pattern as a literal string)</li><li>`quote`: Whether to quote the value; defaults to true</li><li>`trim`: Whether to trim the value; defaults to true</li></ul> |
+| `grep_word_under_cursor_current_buffer` | Same as `grep_word_under_cursor` but for the file of the current buffer | |
+| `grep_visual_selection` | Start live grep with visual selection | see `grep_word_under_cursor` |
+| `grep_word_visual_selection_current_buffer` | Same as `grep_visual_selection` but for the file of the current buffer | |
 
 
 ## Development

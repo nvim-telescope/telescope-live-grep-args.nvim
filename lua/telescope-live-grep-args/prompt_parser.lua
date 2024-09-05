@@ -78,23 +78,27 @@ end
 
 local non_autoquote_chars = {
   ["'"] = true,
-  ["\""] = true,
+  ['"'] = true,
   ["-"] = true,
 }
 
 --- Parses prompt shell like and returns a table containing the arguments
 --- If autoquote is true (default) and promt does not start with ', " or - then { prompt } will be returned.
 M.parse = function(prompt, autoquote)
-  if string.len(prompt) == 0 then return {} end
+  if string.len(prompt) == 0 then
+    return {}
+  end
 
   autoquote = autoquote or autoquote == nil
   local first_char = string.sub(prompt, 1, 1)
-  if autoquote and non_autoquote_chars[first_char] == nil then return { prompt } end
+  if autoquote and non_autoquote_chars[first_char] == nil then
+    return { prompt }
+  end
 
   local str = {
     chars = prompt,
     pos = 1,
-    len = string.len(prompt)
+    len = string.len(prompt),
   }
 
   local parts = {}
@@ -112,8 +116,8 @@ M.parse = function(prompt, autoquote)
         current_arg = nil
       end
     else
-      if shift_char(str, "\"") then
-        delim = "\""
+      if shift_char(str, '"') then
+        delim = '"'
       end
 
       if shift_char(str, "'") then
@@ -123,9 +127,7 @@ M.parse = function(prompt, autoquote)
       if delim then
         frag = shift_until_delim(str, delim)
         if frag then
-          frag = frag
-            :gsub( "\\\"", "\"")
-            :gsub("\\'", "'")
+          frag = frag:gsub('\\"', '"'):gsub("\\'", "'")
         end
       else
         frag = shift_any(str)
