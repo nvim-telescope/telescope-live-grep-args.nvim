@@ -79,8 +79,20 @@ end
 local non_autoquote_chars = {
   ["'"] = true,
   ['"'] = true,
-  ["-"] = true,
+  -- ["-"] = true, -- idk why dash here listed with the same purpose as the quotes
 }
+
+-- Check for a dash at the beginning of the prompt and escape it.
+-- We need to escape dash at the beginning of the prompt because such dash will be interpreted as an option.
+local function escape_dash_in_prompt(prompt)
+  first_char = string.sub(prompt, 1, 1)
+  pos = string.find(prompt, "-")
+  if pos == 1 or (pos == 2 and non_autoquote_chars[first_char]) then
+    prompt = prompt:sub(1, pos - 1) .. "\\" .. prompt:sub(pos)
+  end
+
+  return prompt
+end
 
 --- Parses prompt shell like and returns a table containing the arguments
 --- If autoquote is true (default) and promt does not start with ', " or - then { prompt } will be returned.
@@ -89,6 +101,7 @@ M.parse = function(prompt, autoquote)
     return {}
   end
 
+  prompt = escape_dash_in_prompt(prompt)
   autoquote = autoquote or autoquote == nil
   local first_char = string.sub(prompt, 1, 1)
   if autoquote and non_autoquote_chars[first_char] == nil then
