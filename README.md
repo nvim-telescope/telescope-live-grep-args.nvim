@@ -35,7 +35,7 @@ Find the full [ripgrep guide](https://github.com/BurntSushi/ripgrep/blob/master/
 Add `telescope-live-grep-args.nvim` as `telescope.nvim` dependency, e.g.:
 
 ```lua
-use {
+return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
     { 
