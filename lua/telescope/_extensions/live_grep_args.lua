@@ -41,6 +41,10 @@ local live_grep_args = function(opts)
     end
   end
 
+  if opts.file_encoding then
+    additional_args[#additional_args + 1] = "--encoding=" .. opts.file_encoding
+  end
+
   if opts.search_dirs then
     for i, path in ipairs(opts.search_dirs) do
       opts.search_dirs[i] = vim.fn.expand(path)
