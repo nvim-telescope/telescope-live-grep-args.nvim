@@ -157,6 +157,7 @@ telescope.setup {
         i = {
           ["<C-k>"] = lga_actions.quote_prompt(),
           ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+          ["<C-a>"] = lga_actions.tokenize(),
           -- freeze the current list and start a fuzzy search in the frozen list
           ["<C-space>"] = lga_actions.to_fuzzy_refine,
         },
@@ -192,6 +193,7 @@ This table provides some mapping ideas:
 | `actions.quote_prompt()` | Quote prompt | `foo` → `"foo"` |
 | `actions.quote_prompt({ postfix = ' --iglob ' })` | Quote prompt and add `--iglob` | `foo` → `"foo" --iglob ` |
 | `actions.quote_prompt({ postfix = ' -t' })` | Quote prompt and add `-t` | `foo` → `"foo" -t` |
+| `actions.tokenize()` | "Fuzzy" tokenized search split by single space | `two words` → `words.*two|two.*words` |
 
 
 ### Shortcut functions
