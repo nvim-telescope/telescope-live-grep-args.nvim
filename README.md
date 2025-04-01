@@ -213,7 +213,7 @@ Available shortcuts:
 | `grep_word_under_cursor_current_buffer` | Same as `grep_word_under_cursor` but for the file of the current buffer | |
 | `grep_visual_selection` | Start live grep with visual selection | see `grep_word_under_cursor` |
 | `grep_word_visual_selection_current_buffer` | Same as `grep_visual_selection` but for the file of the current buffer | |
-
+| `grep_register`                             | Start live grep with string from register +                             |                                                                                                                                                                                                                                       |
 
 ## Development
 

@@ -74,4 +74,11 @@ M.grep_word_under_cursor_current_buffer = function(opts)
   M.grep_word_under_cursor(opts)
 end
 
+M.grep_register = function(opts)
+  opts = opts or {}
+  local text = vim.fn.getreg("+")
+  opts = process_grep_under_text(text, opts)
+  live_grep_args.live_grep_args(opts)
+end
+
 return M
