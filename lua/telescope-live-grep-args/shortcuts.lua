@@ -2,8 +2,11 @@
 --
 -- SPDX-License-Identifier: MIT
 
-local live_grep_args = require("telescope").extensions.live_grep_args
 local helpers = require("telescope-live-grep-args.helpers")
+
+local function get_extension()
+  return require("telescope").extensions.live_grep_args
+end
 
 local function get_visual()
   local _, ls, cs = unpack(vim.fn.getpos("v"))
@@ -49,7 +52,7 @@ M.grep_word_under_cursor = function(opts)
   opts = opts or {}
   local word_under_cursor = vim.fn.expand("<cword>")
   opts = process_grep_under_text(word_under_cursor, opts)
-  live_grep_args.live_grep_args(opts)
+  get_extension().live_grep_args(opts)
 end
 
 M.grep_visual_selection = function(opts)
@@ -57,7 +60,7 @@ M.grep_visual_selection = function(opts)
   local visual = get_visual()
   local text = visual[1] or ""
   opts = process_grep_under_text(text, opts)
-  live_grep_args.live_grep_args(opts)
+  get_extension().live_grep_args(opts)
 end
 
 M.grep_word_visual_selection_current_buffer = function(opts)
