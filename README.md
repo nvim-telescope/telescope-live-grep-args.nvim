@@ -192,6 +192,7 @@ This table provides some mapping ideas:
 | `actions.quote_prompt()` | Quote prompt | `foo` → `"foo"` |
 | `actions.quote_prompt({ postfix = ' --iglob ' })` | Quote prompt and add `--iglob` | `foo` → `"foo" --iglob ` |
 | `actions.quote_prompt({ postfix = ' -t' })` | Quote prompt and add `-t` | `foo` → `"foo" -t` |
+| `actions.toggle_quote_prompt()` | Toggle between plain and quoted prompt. Remembers last used rg args for the session. | `foo` ↔ `"foo" -g *.lua` |
 
 
 ### Shortcut functions
