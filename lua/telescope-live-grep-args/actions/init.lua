@@ -4,4 +4,5 @@
 
 return {
   quote_prompt = require("telescope-live-grep-args.actions.quote_prompt"),
+  toggle_quote_prompt = require("telescope-live-grep-args.actions.toggle_quote_prompt"),
 }
