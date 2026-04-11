@@ -3,6 +3,7 @@
 -- SPDX-License-Identifier: MIT
 
 local prompt_parser = require("telescope-live-grep-args.prompt_parser")
+local shortcuts = require("telescope-live-grep-args.shortcuts")
 
 local pickers = require("telescope.pickers")
 local sorters = require("telescope.sorters")
@@ -96,6 +97,7 @@ return telescope.register_extension({
   end,
   exports = {
     live_grep_args = live_grep_args,
+    shortcuts = shortcuts,
     live_grep_raw = live_grep_args, -- historical name
   },
 })

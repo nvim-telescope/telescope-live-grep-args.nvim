@@ -38,7 +38,7 @@ Add `telescope-live-grep-args.nvim` as `telescope.nvim` dependency, e.g.:
 use {
   "nvim-telescope/telescope.nvim",
   dependencies = {
-    { 
+    {
         "nvim-telescope/telescope-live-grep-args.nvim" ,
         -- This will not install any breaking changes.
         -- For major updates, this must be adjusted manually.
@@ -200,9 +200,8 @@ Live grep args ships some additional shortcuts you can map.
 
 This is an example to live grep for the word under the cursor:
 
-```
-local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
-keymap.set("n", "<leader>gc", live_grep_args_shortcuts.grep_word_under_cursor)
+```lua
+keymap.set("n", "<leader>gc", require("telescope").extensions.live_grep_args.shortcuts.grep_word_under_cursor)
 ```
 
 Available shortcuts:
