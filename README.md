@@ -190,9 +190,9 @@ This table provides some mapping ideas:
 | Mapped function | Description | Example |
 | --- | --- | --- |
 | `actions.quote_prompt()` | Quote prompt | `foo` → `"foo"` |
+| `actions.quote_prompt({ prefix = '--no-ignore ' })` | Quote prompt and add `--no-ignore` | `foo` → `--no-ignore "foo"` |
 | `actions.quote_prompt({ postfix = ' --iglob ' })` | Quote prompt and add `--iglob` | `foo` → `"foo" --iglob ` |
 | `actions.quote_prompt({ postfix = ' -t' })` | Quote prompt and add `-t` | `foo` → `"foo" -t` |
-
 
 ### Shortcut functions
 

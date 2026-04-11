@@ -7,6 +7,7 @@ local helpers = require("telescope-live-grep-args.helpers")
 
 local default_opts = {
   quote_char = '"',
+  prefix = "",
   postfix = " ",
   trim = true,
 }
@@ -21,7 +22,7 @@ return function(opts)
     if opts.trim then
       prompt = vim.trim(prompt)
     end
-    prompt = helpers.quote(prompt, { quote_char = opts.quote_char }) .. opts.postfix
+    prompt = opts.prefix .. helpers.quote(prompt, { quote_char = opts.quote_char }) .. opts.postfix
     picker:set_prompt(prompt)
   end
 end
