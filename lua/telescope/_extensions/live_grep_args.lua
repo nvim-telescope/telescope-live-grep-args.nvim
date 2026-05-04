@@ -23,7 +23,20 @@ end
 local setup_opts = {
   auto_quoting = true,
   mappings = {},
+  history = {
+    max = 10,
+    keys = {
+      cycle = "<C-y>",
+      next = "<Down>",
+      prev = "<Up>",
+      submit = "<CR>",
+    },
+  },
 }
+
+-- local last_prompt = ""
+local prompt_history = {}
+local MAX_HISTORY = 10
 
 local live_grep_args = function(opts)
   opts = vim.tbl_extend("force", setup_opts, opts or {})
@@ -70,18 +83,92 @@ local live_grep_args = function(opts)
     end
   end
 
+  local action_state = require("telescope.actions.state")
+  local actions = require("telescope.actions")
+
   pickers
     .new(opts, {
       prompt_title = "Live Grep (Args)",
       finder = finders.new_job(cmd_generator, opts.entry_maker, opts.max_results, opts.cwd),
       previewer = conf.grep_previewer(opts),
       sorter = sorters.highlighter_only(opts),
-      attach_mappings = function(_, map)
+      attach_mappings = function(prompt_bufnr, map)
         for mode, mappings in pairs(opts.mappings) do
           for key, action in pairs(mappings) do
             map(mode, key, action)
           end
         end
+
+        -- history management
+        local history_keys = (opts.history and opts.history.keys) or {}
+        local max_history = (opts.history and opts.history.max) or MAX_HISTORY
+        local history_index = 0
+
+        -- cycle through history
+        if history_keys.cycle then
+          map({ "i", "n" }, history_keys.cycle, function(bufnr)
+            if #prompt_history == 0 then
+              return
+            end
+            history_index = history_index + 1
+            if history_index > #prompt_history then
+              history_index = 1
+            end
+            local picker = action_state.get_current_picker(bufnr)
+            if not picker then
+              return
+            end
+            picker:set_prompt(prompt_history[history_index])
+          end)
+        end
+
+        -- capture used search prompt, when user moves the selection or submits
+        local function capture_prompt()
+          if not vim.api.nvim_buf_is_valid(prompt_bufnr) then
+            return
+          end
+          local picker = action_state.get_current_picker(prompt_bufnr)
+          local line = picker and picker:_get_prompt() or ""
+          if not line or line == "" then
+            return
+          end
+
+          -- remove existing duplicate and add at the front
+          for i, p in ipairs(prompt_history) do
+            if p == line then
+              table.remove(prompt_history, i)
+              break
+            end
+          end
+          table.insert(prompt_history, 1, line)
+
+          -- trim to max_history
+          while #prompt_history > max_history do
+            table.remove(prompt_history)
+          end
+
+          -- reset cycle so next session starts at the newest
+          history_index = 0
+        end
+
+        local function wrap(action)
+          return function()
+            capture_prompt()
+            action(prompt_bufnr)
+          end
+        end
+
+        -- keymaps for triggering history cache update
+        if history_keys.next then
+          map({ "i", "n" }, history_keys.next, wrap(actions.move_selection_next))
+        end
+        if history_keys.prev then
+          map({ "i", "n" }, history_keys.prev, wrap(actions.move_selection_previous))
+        end
+        if history_keys.submit then
+          map({ "i", "n" }, history_keys.submit, wrap(actions.select_default))
+        end
+
         return true
       end,
     })
