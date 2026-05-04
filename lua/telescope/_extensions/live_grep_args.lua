@@ -36,7 +36,6 @@ local setup_opts = {
 
 -- local last_prompt = ""
 local prompt_history = {}
-local MAX_HISTORY = 10
 
 local live_grep_args = function(opts)
   opts = vim.tbl_extend("force", setup_opts, opts or {})
@@ -99,14 +98,21 @@ local live_grep_args = function(opts)
           end
         end
 
-        -- history management
-        local history_keys = (opts.history and opts.history.keys) or {}
-        local max_history = (opts.history and opts.history.max) or MAX_HISTORY
-        local history_index = 0
+        -- history management, set max to zero to disable the feature
+        local function history_key(name)
+          return (opts.history and opts.history.keys and opts.history.keys[name]) or setup_opts.history.keys[name]
+        end
+        local history_key_cycle = history_key("cycle")
+        local history_key_prev = history_key("prev")
+        local history_key_next = history_key("next")
+        local history_key_submit = history_key("submit")
+        local max_history = (opts.history and opts.history.max) or setup_opts.history.max
 
-        -- cycle through history
-        if history_keys.cycle then
-          map({ "i", "n" }, history_keys.cycle, function(bufnr)
+        if max_history > 0 then
+          local history_index = 0
+
+          -- cycle through history
+          map({ "i", "n" }, history_key_cycle, function(bufnr)
             if #prompt_history == 0 then
               return
             end
@@ -120,53 +126,47 @@ local live_grep_args = function(opts)
             end
             picker:set_prompt(prompt_history[history_index])
           end)
-        end
 
-        -- capture used search prompt, when user moves the selection or submits
-        local function capture_prompt()
-          if not vim.api.nvim_buf_is_valid(prompt_bufnr) then
-            return
-          end
-          local picker = action_state.get_current_picker(prompt_bufnr)
-          local line = picker and picker:_get_prompt() or ""
-          if not line or line == "" then
-            return
+          -- capture used search prompt, when user moves the selection or submits
+          local function capture_prompt()
+            if not vim.api.nvim_buf_is_valid(prompt_bufnr) then
+              return
+            end
+            local picker = action_state.get_current_picker(prompt_bufnr)
+            local line = picker and picker:_get_prompt() or ""
+            if not line or line == "" then
+              return
+            end
+
+            -- remove existing duplicate and add at the front
+            for i, p in ipairs(prompt_history) do
+              if p == line then
+                table.remove(prompt_history, i)
+                break
+              end
+            end
+            table.insert(prompt_history, 1, line)
+
+            -- trim to max_history
+            while #prompt_history > max_history do
+              table.remove(prompt_history)
+            end
+
+            -- reset cycle so next session starts at the newest
+            history_index = 0
           end
 
-          -- remove existing duplicate and add at the front
-          for i, p in ipairs(prompt_history) do
-            if p == line then
-              table.remove(prompt_history, i)
-              break
+          local function wrap(action)
+            return function()
+              capture_prompt()
+              action(prompt_bufnr)
             end
           end
-          table.insert(prompt_history, 1, line)
 
-          -- trim to max_history
-          while #prompt_history > max_history do
-            table.remove(prompt_history)
-          end
-
-          -- reset cycle so next session starts at the newest
-          history_index = 0
-        end
-
-        local function wrap(action)
-          return function()
-            capture_prompt()
-            action(prompt_bufnr)
-          end
-        end
-
-        -- keymaps for triggering history cache update
-        if history_keys.next then
-          map({ "i", "n" }, history_keys.next, wrap(actions.move_selection_next))
-        end
-        if history_keys.prev then
-          map({ "i", "n" }, history_keys.prev, wrap(actions.move_selection_previous))
-        end
-        if history_keys.submit then
-          map({ "i", "n" }, history_keys.submit, wrap(actions.select_default))
+          -- keymaps for triggering history cache update
+          map({ "i", "n" }, history_key_next, wrap(actions.move_selection_next))
+          map({ "i", "n" }, history_key_prev, wrap(actions.move_selection_previous))
+          map({ "i", "n" }, history_key_submit, wrap(actions.select_default))
         end
 
         return true
