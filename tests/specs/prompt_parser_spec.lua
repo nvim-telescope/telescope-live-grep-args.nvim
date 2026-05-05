@@ -109,11 +109,11 @@ local tests = {
 
 describe("prompt_parser.parse", function ()
   for _, test in pairs(tests) do
-    it('should parse »' .. test[1] .. '« correclty with auto-quoting', function ()
+    it('should parse »' .. test[1] .. '« correctly with auto-quoting', function ()
       assert.are.same(test[2], prompt_parser.parse(test[1], true))
     end)
 
-    it('should parse »' .. test[1] .. '« correclty without auto-quoting', function ()
+    it('should parse »' .. test[1] .. '« correctly without auto-quoting', function ()
       assert.are.same(test[3], prompt_parser.parse(test[1], false))
     end)
   end

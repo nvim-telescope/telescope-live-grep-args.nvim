@@ -161,6 +161,16 @@ telescope.setup {
           ["<C-space>"] = lga_actions.to_fuzzy_refine,
         },
       },
+      history = { -- optional history configuration
+        max = 10,
+        keys = {
+          cycle = "<C-y>",
+          next  = "<Up>",
+          prev  = "<Down>",
+          submit = "<CR>",
+          -- set any to false/nil to disable
+        },
+      },
       -- ... also accepts theme settings, for example:
       -- theme = "dropdown", -- use dropdown theme
       -- theme = { }, -- use own theme spec
