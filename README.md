@@ -146,6 +146,7 @@ This behaviour can be turned off by setting the `auto_quoting` option to `false`
 
 ```lua
 local telescope = require("telescope")
+local actions = require("telescope.actions")
 local lga_actions = require("telescope-live-grep-args.actions")
 
 telescope.setup {
@@ -158,7 +159,7 @@ telescope.setup {
           ["<C-k>"] = lga_actions.quote_prompt(),
           ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
           -- freeze the current list and start a fuzzy search in the frozen list
-          ["<C-space>"] = lga_actions.to_fuzzy_refine,
+          ["<C-space>"] = actions.to_fuzzy_refine,
         },
       },
       -- ... also accepts theme settings, for example:
